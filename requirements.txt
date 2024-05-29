@@ -1,5 +1,3 @@
-socket
 opencv-python
 pickle
 numpy
-time
