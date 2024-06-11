@@ -4,6 +4,12 @@ import socket
 import pickle
 import numpy as np
 import time
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
 MAX_LENGTH = 65536
 start_time = time.time()
 interval   = 1
@@ -79,7 +85,13 @@ def server_program():
 
     conn.close()  # close the connection
     
-server_program()
+# server_program()
 
-#if __name__ == '__main__':
-#    main()
+@app.route('/start_server', methods=['POST'])
+def start_server():
+    server_thread = threading.Thread(target=server_program)
+    server_thread.start()
+    return jsonify({"status": "Server started"}), 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)
